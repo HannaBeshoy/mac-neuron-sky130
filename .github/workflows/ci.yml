@@ -1,0 +1,20 @@
+name: cells
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ngspice and Python packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ngspice
+          python3 -m pip install --break-system-packages numpy pytest
+      - name: Fetch the SKY130 device models
+        run: tools/get_pdk.sh
+      - name: Run the cell tests
+        run: python3 -m pytest -q tests
