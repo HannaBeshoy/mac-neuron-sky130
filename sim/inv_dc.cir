@@ -1,0 +1,12 @@
+* First check: inverter transfer curve, typical corner, 1.8 V, 27 C
+* Run from this folder:  ngspice -b inv_dc.cir
+.include "models_tt.lib"
+.include "../cells/cells.spice"
+Vdd vdd 0 1.8
+Vin a 0 0
+X1 a y vdd 0 inv
+.control
+dc Vin 0 1.8 0.005
+meas dc vm when v(y)=v(a)
+.endc
+.end

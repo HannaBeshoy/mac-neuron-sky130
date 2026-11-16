@@ -1,0 +1,28 @@
+* Three static CMOS cells drawn at transistor level.
+* n-channel: sky130_fd_pr__nfet_01v8, W = 0.65 um, L = 0.15 um
+* p-channel: sky130_fd_pr__pfet_01v8_hvt, W = 1.00 um, L = 0.15 um
+* Source and drain areas and perimeters are estimates made before
+* layout: a diffusion strip 0.265 um long on each side of the gate.
+*   area = W * 0.265,  perimeter = 2 * (W + 0.265)
+* Pin order: inputs, output, vdd, gnd.
+
+.subckt inv a y vdd gnd
+XN y a gnd gnd sky130_fd_pr__nfet_01v8     w=0.65 l=0.15 ad=0.172 as=0.172 pd=1.83 ps=1.83
+XP y a vdd vdd sky130_fd_pr__pfet_01v8_hvt w=1.00 l=0.15 ad=0.265 as=0.265 pd=2.53 ps=2.53
+.ends
+
+.subckt nand2 a b y vdd gnd
+* n-channel pair in series, input a next to the output
+XNA y a n1  gnd sky130_fd_pr__nfet_01v8     w=0.65 l=0.15 ad=0.172 as=0.172 pd=1.83 ps=1.83
+XNB n1 b gnd gnd sky130_fd_pr__nfet_01v8    w=0.65 l=0.15 ad=0.172 as=0.172 pd=1.83 ps=1.83
+XPA y a vdd vdd sky130_fd_pr__pfet_01v8_hvt w=1.00 l=0.15 ad=0.265 as=0.265 pd=2.53 ps=2.53
+XPB y b vdd vdd sky130_fd_pr__pfet_01v8_hvt w=1.00 l=0.15 ad=0.265 as=0.265 pd=2.53 ps=2.53
+.ends
+
+.subckt nor2 a b y vdd gnd
+* p-channel pair in series, input a next to the output
+XNA y a gnd gnd sky130_fd_pr__nfet_01v8     w=0.65 l=0.15 ad=0.172 as=0.172 pd=1.83 ps=1.83
+XNB y b gnd gnd sky130_fd_pr__nfet_01v8     w=0.65 l=0.15 ad=0.172 as=0.172 pd=1.83 ps=1.83
+XPA y a p1  vdd sky130_fd_pr__pfet_01v8_hvt w=1.00 l=0.15 ad=0.265 as=0.265 pd=2.53 ps=2.53
+XPB p1 b vdd vdd sky130_fd_pr__pfet_01v8_hvt w=1.00 l=0.15 ad=0.265 as=0.265 pd=2.53 ps=2.53
+.ends
